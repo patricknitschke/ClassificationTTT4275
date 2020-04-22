@@ -9,6 +9,9 @@ training_data1 = data[0:30]
 training_data2 = data[51:81]
 training_data3 = data[101:131]
 training_data = [training_data1,training_data2,training_data3]
+test = data
+solution = target
+
 
 def sigmoid(x):
   return 1 / (1 + np.exp(-x))
@@ -42,17 +45,40 @@ def find_W(data, m_iterations,n_classes,alpha):
         
         W_prev = W
         grad_mse = np.zeros((C,D+1))  
+        update = grad_mse
         for t_k in t :
             for data_k in data:
-              update = update_mse_grad(data_k,t_k,W,C)
-              grad_mse += update
-        print(W)
+              update += update_mse_grad(data_k,t_k,W,C)
+        grad_mse += update
+        print("update:",update)
         W = W_prev - alpha*grad_mse
     return W
+    
+
+def test_instance (W,x,solution):
+  x = np.append(x,1)
+  x = x.reshape((len(x),1))
+  print(W@x)
 
 
-W = find_W(training_data,5000,3,0.1)
-print(W)
+def test_sequence(W,x_sequence,solution_sequence):
+  n_tests = len(x_sequence)
+  correct = 0
+  wrong = 0
+  for i in range (n_tests):
+    if test_instance(W,x_sequence[i],solution_sequence[i]):
+      correct += 1
+    else:
+      wrong += 1
+  return correct,wrong,correct/wrong
+
+
+
+W = find_W(training_data,10,3,0.4)
+
+
+y,n,r = test_sequence(W,test,solution)
+
 
     
 
