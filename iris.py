@@ -14,28 +14,28 @@ test = data
 solution = target
 
 
-def sigmoid(g):
-  return 1 / (1 + np.exp(-g))
+def sigmoid(z):
+  return 1 / (1 + np.exp(-z))
 
 
-def update_mse_grad(data,t,W,C):
-  grad_mse = np.zeros((3,1))
-  for i in range(len(data)):
-    x = data[i]
+def update_mse_grad(test_data,t,W,C):
+  grad_mse = np.zeros((C,len(test_data[0])+1))
+  for i in range(len(test_data)):
+    x = test_data[i]
     x = np.append(x,0)
+    x = x.reshape(len(x),1)
+    t = t.reshape(len(t),1)
     z = W@x
     g = sigmoid(z)
-    calc = np.dot((g-t),g)
-    calc = np.dot(calc,np.ones((1,C))-g)
-    calc = calc.reshape((3,1))
-    grad_mse += calc
-  return grad_mse*x
+    grad_mse+= ((g-t)*(g*(1-g)))@x.T
+    
+  return grad_mse
 
 def find_W(data, m_iterations,n_classes,alpha):
     C = n_classes
     D = len(training_data[0][0])
-    W_x= np.ones((C,D))
-    W_0 = np.zeros((C,1))
+    W_x= np.zeros((C,D))
+    W_0 = np.ones((C,1))
     W = np.concatenate((W_x,W_0),axis = 1)
     
     t_k1 = np.array([1,0,0]) #class1
@@ -47,20 +47,19 @@ def find_W(data, m_iterations,n_classes,alpha):
         
         W_prev = W
         grad_mse = np.zeros((C,D+1))  
-        update = grad_mse
-        for t_k in t :
-            for data_k in data:
-              grad_mse += update_mse_grad(data_k,t_k,W_prev,C)
-        print(grad_mse)
+        for (data_k,t_k) in zip(data,t):
+          grad_mse += update_mse_grad(data_k,t_k,W_prev,C)
         W = W_prev - alpha*grad_mse
+        print(W)
     return W
     
 
 def test_instance (W,x,solution):
   x = np.append(x,0)
-  Wx = np.dot(W,x)
-  answer = np.argmax(sigmoid(Wx))
-  #print("solution:",solution,"guess:",answer)
+  Wx = W@x
+  answer = np.argmax(Wx)
+  print (sigmoid(Wx))
+  print("solution:",solution,"guess:",answer)
   if solution == answer:
     return True
   return False
@@ -68,12 +67,12 @@ def test_instance (W,x,solution):
 
 
 def test_sequence(W,x_sequence,solution_sequence):
-  n_tests = 20
+  n_tests = 60
   correct = 0
   wrong = 0
   
   for i in range (n_tests): 
-    k = random.randint(0,150)
+    k = random.randint(0,130)
     if test_instance(W,x_sequence[k],solution_sequence[k]):
       correct += 1
     else:
@@ -82,13 +81,16 @@ def test_sequence(W,x_sequence,solution_sequence):
 
 
 
-W = find_W(training_data,200,3,0.01)
+W = find_W(training_data,5000,3,0.01)
 print(W)
 
 
-y,n,r = test_sequence(W,test,solution)
+c,w,r = test_sequence(W,data,target)
 
-print (r)
+print(r)
+
+
+
 
     
 
