@@ -10,8 +10,13 @@ training_data1 = data[0:30]
 training_data2 = data[51:81]
 training_data3 = data[101:131]
 training_data = [training_data1,training_data2,training_data3]
+training_target1 = target[0:30]
+training_target2 = target[51:81]
+training_target3 = target[101:131]
+training_target = [training_target1, training_target2, training_target3]
 test = data
 solution = target
+confusion_matrix = np.zeros((3,3))
 
 
 def sigmoid(z):
@@ -66,29 +71,37 @@ def test_instance (W,x,solution,confusion):
 
 
 
-def test_sequence(W,x_sequence,solution_sequence,n_classes):
-  confusion_matrix = np.zeros((n_classes,n_classes))
-  n_tests = 60
+def test_sequence(W,x_sequence,solution_sequence,n_classes,confusion_matrix):
   correct = 0
   wrong = 0
   
-  for i in range (n_tests): 
-    k = random.randint(0,130)
-    if test_instance(W,x_sequence[k],solution_sequence[k],confusion_matrix):
+  for nclass in range (len(x_sequence)): 
+    if test_instance(W,x_sequence[nclass],solution_sequence[nclass],confusion_matrix):
       correct += 1
     else:
       wrong += 1
-  return correct,wrong,correct/n_tests,confusion_matrix
+  return correct,wrong,confusion_matrix
 
 
 
-W = find_W(training_data,5000,3,0.01)
+W = find_W(training_data,3000,3,0.01)
 print(W)
 
+def assignment_1(W,x_sequence,t_sequence,n_classes,confusion_matrix):
+  tot = 0
+  correct = 0
+  wrong = 0
+  for classes in range (3): 
+    c,w,matrix = test_sequence(W,x_sequence[classes],t_sequence[classes],3,confusion_matrix)
+    correct += c
+    wrong += w
+    tot += w+c
+  return correct/tot,matrix
 
-c,w,r,m = test_sequence(W,data,target,3)
 
-print(r,m)
+ratio_assignment_1, confusion_matrix_1 = assignment_1(W,training_data,training_target,3,confusion_matrix)
+
+print(ratio_assignment_1,confusion_matrix)
 
 
 
