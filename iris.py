@@ -7,17 +7,25 @@ iris = load_iris()
 data = iris.data
 target = iris.target
 training_data1 = data[0:30]
-training_data2 = data[51:81]
-training_data3 = data[101:131]
+training_data2 = data[50:80]
+training_data3 = data[100:130]
 training_data = [training_data1,training_data2,training_data3]
 training_target1 = target[0:30]
-training_target2 = target[51:81]
-training_target3 = target[101:131]
+training_target2 = target[50:80]
+training_target3 = target[100:130]
 training_target = [training_target1, training_target2, training_target3]
 test = data
 solution = target
 confusion_matrix = np.zeros((3,3))
 
+testing_data1 = data[30:50]
+testing_data2 = data[80:100]
+testing_data3 = data[130:150]
+testing_data = [testing_data1,testing_data2,testing_data3]
+testing_target1 = target[30:50]
+testing_target2 = target[80:100]
+testing_target3 = target[130:150]
+testing_target = [testing_target1, testing_target2, testing_target3]
 
 def sigmoid(z):
   return 1 / (1 + np.exp(-z))
@@ -84,10 +92,11 @@ def test_sequence(W,x_sequence,solution_sequence,n_classes,confusion_matrix):
 
 
 
-W = find_W(training_data,3000,3,0.01)
-print(W)
+#W = find_W(training_data,3000,3,0.01)
+#print(W)
 
-def assignment_1(W,x_sequence,t_sequence,n_classes,confusion_matrix):
+def assignment_1_trainingset(x_sequence,t_sequence,n_classes,confusion_matrix):
+  W = find_W(x_sequence, 3000,n_classes, 0.01)
   tot = 0
   correct = 0
   wrong = 0
@@ -96,16 +105,33 @@ def assignment_1(W,x_sequence,t_sequence,n_classes,confusion_matrix):
     correct += c
     wrong += w
     tot += w+c
-  return correct/tot,matrix
+  return correct/tot,matrix,W
+
+def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_classes, confusion_matrix):
+  confusion_matrix = np.zeros((3, 3))
+  #W = find_W(training_data, 3000, n_classes, 0.01)
+  tot = 0
+  correct = 0
+  wrong = 0
+  for classes in range(3):
+    c,w,matrix = test_sequence(W, testing_data[classes], testing_solution[classes], n_classes, confusion_matrix)
+    correct += c
+    wrong += w
+    tot += w+c
+  return correct/tot, matrix
 
 
-ratio_assignment_1, confusion_matrix_1 = assignment_1(W,training_data,training_target,3,confusion_matrix)
 
-print(ratio_assignment_1,confusion_matrix)
+training_ratio, confusion_training, W = assignment_1_trainingset(training_data,training_target,3,confusion_matrix)
+
+print("Training sequence ratio and confusion matrix")
+print(training_ratio,confusion_training)
 
 
+test_ratio, confusion_test = assignment_1_testingset(W, training_data, testing_data, testing_target, 3, confusion_matrix)
 
-
-    
+print("Testing sequence ratio and confusion matrix")
+print(test_ratio)
+print(confusion_test)  
 
 
