@@ -54,30 +54,31 @@ def find_W(data, m_iterations,n_classes,alpha):
     return W
     
 
-def test_instance (W,x,solution):
+def test_instance (W,x,solution,confusion):
   x = np.append(x,0)
   Wx = W@x
   answer = np.argmax(Wx)
-  print (sigmoid(Wx))
   print("solution:",solution,"guess:",answer)
+  confusion[solution][answer] += 1
   if solution == answer:
     return True
   return False
 
 
 
-def test_sequence(W,x_sequence,solution_sequence):
+def test_sequence(W,x_sequence,solution_sequence,n_classes):
+  confusion_matrix = np.zeros((n_classes,n_classes))
   n_tests = 60
   correct = 0
   wrong = 0
   
   for i in range (n_tests): 
     k = random.randint(0,130)
-    if test_instance(W,x_sequence[k],solution_sequence[k]):
+    if test_instance(W,x_sequence[k],solution_sequence[k],confusion_matrix):
       correct += 1
     else:
       wrong += 1
-  return correct,wrong,correct/n_tests
+  return correct,wrong,correct/n_tests,confusion_matrix
 
 
 
@@ -85,9 +86,9 @@ W = find_W(training_data,5000,3,0.01)
 print(W)
 
 
-c,w,r = test_sequence(W,data,target)
+c,w,r,m = test_sequence(W,data,target,3)
 
-print(r)
+print(r,m)
 
 
 
