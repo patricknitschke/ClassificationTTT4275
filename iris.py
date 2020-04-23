@@ -2,7 +2,7 @@ from sklearn.datasets import load_iris
 import numpy as np
 import random
 
-
+"""
 iris = load_iris()
 data = iris.data
 target = iris.target
@@ -26,7 +26,7 @@ testing_target1 = target[30:50]
 testing_target2 = target[80:100]
 testing_target3 = target[130:150]
 testing_target = [testing_target1, testing_target2, testing_target3]
-
+"""
 def sigmoid(z):
   return 1 / (1 + np.exp(-z))
 
@@ -46,7 +46,7 @@ def update_mse_grad(test_data,t,W,C):
 
 def find_W(data, m_iterations,n_classes,alpha):
     C = n_classes
-    D = len(training_data[0][0])
+    D = len(data[0][0])
     W_x= np.zeros((C,D))
     W_0 = np.ones((C,1))
     W = np.concatenate((W_x,W_0),axis = 1)
@@ -63,7 +63,7 @@ def find_W(data, m_iterations,n_classes,alpha):
         for (data_k,t_k) in zip(data,t):
           grad_mse += update_mse_grad(data_k,t_k,W_prev,C)
         W = W_prev - alpha*grad_mse
-        print(W)
+        #print(W)
     return W
     
 
@@ -71,7 +71,7 @@ def test_instance (W,x,solution,confusion):
   x = np.append(x,0)
   Wx = W@x
   answer = np.argmax(Wx)
-  print("solution:",solution,"guess:",answer)
+  #print("solution:",solution,"guess:",answer)
   confusion[solution][answer] += 1
   if solution == answer:
     return True
@@ -121,7 +121,7 @@ def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_
   return correct/tot, matrix
 
 
-
+"""
 training_ratio, confusion_training, W = assignment_1_trainingset(training_data,training_target,3,confusion_matrix)
 
 print("Training sequence ratio and confusion matrix")
@@ -134,4 +134,4 @@ print("Testing sequence ratio and confusion matrix")
 print(test_ratio)
 print(confusion_test)  
 
-
+"""
