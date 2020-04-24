@@ -75,51 +75,47 @@ def task_1b():
     print(confusion_test)  
 
 def task_2(data, target):
+    """
     #Historgrams
     features = ['sepal length', 'sepal width', 'petal length', 'petal width']
     iris.printHistograms(data, features)
-
+    """
     #-----------------Removing 1 feature------------
-    print("\n Deleting feature 1 \n")
     data = np.delete(data, 1, axis=1)
     training_data, training_target, testing_data, testing_target = iris.allocate_data(data, target)
-    #print(training_data)
 
-    print("Training: \n")
+    print("Training with 3 features: ")
     training_ratio1, confusion_training1, W1 = iris.assignment_1_trainingset(training_data,training_target,3)
     print(training_ratio1)
     print(confusion_training1)
-    print("Testing:")
+    print("Testing with 3 features:")
     test_ratio1, confusion_test1 = iris.assignment_1_testingset(W1, training_data, testing_data, testing_target, 3)
     print(test_ratio1)
     print(confusion_test1) 
 
     #------------------Removing 2 features-------------
-    print("\n Feature 2 removed \n")
     data = np.delete(data, 0, axis=1)
     training_data, training_target, testing_data, testing_target = iris.allocate_data(data, target)
-    #print(training_data)
 
-    print("Training: \n")
+    print("\n\nTraining with 2 features: ")
     training_ratio2, confusion_training2, W2 = iris.assignment_1_trainingset(training_data,training_target,3)
     print(training_ratio2)
     print(confusion_training2)
-    print("Testing:")
+    print("Testing with 2 features:")
     test_ratio2, confusion_test2 = iris.assignment_1_testingset(W2, training_data, testing_data, testing_target, 3)
     print(test_ratio2)
     print(confusion_test2) 
 
     #---------------Removing 3 features------------------------------
-    print("\n No f 3 \n")
     data = np.delete(data, 0, axis=1)
     training_data, training_target, testing_data, testing_target = iris.allocate_data(data, target)
     #print(training_data)
     
-    print("Training: \n")
+    print("\n\nTraining with 1 feature: ")
     training_ratio3, confusion_training3, W3 = iris.assignment_1_trainingset(training_data,training_target,3)
     print(training_ratio3)
     print(confusion_training3)
-    print("Testing:")
+    print("Testing with 1 feature:")
     test_ratio3, confusion_test3 = iris.assignment_1_testingset(W3, training_data, testing_data, testing_target, 3)
     print(test_ratio3)
     print(confusion_test3) 
@@ -130,12 +126,15 @@ def task_2(data, target):
 
 
 def main():
-    print("First 30 for testing")
-    #task_1a()
-    print("-----------------------------------")
-    print("Last 30")
-    #task_1b()
+    """
+    print("Task 1a")
+    task_1a()
+    print("\n ----------------------------------- \n")
+    print("Task 1b")
+    task_1b()
+    """
     print("\n ------------------------------------------ \n")
+    print("Task 2")
     task_2(data, target)
     
 main()

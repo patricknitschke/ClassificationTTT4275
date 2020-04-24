@@ -4,31 +4,8 @@ import random
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-"""
-iris = load_iris()
-data = iris.data
-target = iris.target
-training_data1 = data[0:30]
-training_data2 = data[50:80]
-training_data3 = data[100:130]
-training_data = [training_data1,training_data2,training_data3]
-training_target1 = target[0:30]
-training_target2 = target[50:80]
-training_target3 = target[100:130]
-training_target = [training_target1, training_target2, training_target3]
-test = data
-solution = target
-confusion_matrix = np.zeros((3,3))
 
-testing_data1 = data[30:50]
-testing_data2 = data[80:100]
-testing_data3 = data[130:150]
-testing_data = [testing_data1,testing_data2,testing_data3]
-testing_target1 = target[30:50]
-testing_target2 = target[80:100]
-testing_target3 = target[130:150]
-testing_target = [testing_target1, testing_target2, testing_target3]
-"""
+
 def allocate_data(data, target):
   training_data1 = data[0:30]
   training_data2 = data[50:80]
@@ -49,6 +26,7 @@ def allocate_data(data, target):
   testing_target = [testing_target1, testing_target2, testing_target3]
   return training_data, training_target, testing_data, testing_target
 
+
 def sigmoid(z):
   return 1 / (1 + np.exp(-z))
 
@@ -65,6 +43,7 @@ def update_mse_grad(test_data,t,W,C):
     grad_mse+= ((g-t)*(g*(1-g)))@x.T
     
   return grad_mse
+
 
 def find_W(data, m_iterations,n_classes,alpha):
     C = n_classes
@@ -114,8 +93,6 @@ def test_sequence(W,x_sequence,solution_sequence,n_classes,confusion_matrix):
 
 
 
-#W = find_W(training_data,3000,3,0.01)
-#print(W)
 
 def assignment_1_trainingset(x_sequence,t_sequence,n_classes):
   confusion_matrix = np.zeros((3,3))
@@ -129,6 +106,7 @@ def assignment_1_trainingset(x_sequence,t_sequence,n_classes):
     wrong += w
     tot += w+c
   return correct/tot,matrix,W
+
 
 def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_classes):
   confusion_matrix = np.zeros((3, 3))
@@ -144,20 +122,6 @@ def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_
   return correct/tot, matrix
 
 
-"""
-training_ratio, confusion_training, W = assignment_1_trainingset(training_data,training_target,3,confusion_matrix)
-
-print("Training sequence ratio and confusion matrix")
-print(training_ratio,confusion_training)
-
-
-test_ratio, confusion_test = assignment_1_testingset(W, training_data, testing_data, testing_target, 3, confusion_matrix)
-
-print("Testing sequence ratio and confusion matrix")
-print(test_ratio)
-print(confusion_test)  
-
-"""
 
 def printHistograms(data, features):
   for i in range(0,4):
@@ -169,4 +133,5 @@ def printHistograms(data, features):
     title = 'histogram for feature: ' + features[i]
     plt.legend(labels)
     plt.title(title)
+    #plt.savefig('/figures' + str(i) + '.png')
   plt.show()
