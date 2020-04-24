@@ -7,9 +7,23 @@ def sample_mean(dataset):
     for vector in range (len(dataset)):
         for element in range (N):
             x_sum[element] += dataset[element][vector]
-    print(x_sum)
     for element in range(len(x_sum)):
-        x_sum[element] /=N
+        x_sum[element] /= N
     return x_sum
+
+def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
+    N = len(dataset[0])
+    mean = sample_mean(dataset)
+    mean = mean.reshape(1,N)
+    cov_matrix = np.zeros((N,N))
+    for sample in range (N):
+        cov_matrix += (dataset[sample]-mean).T@(dataset[sample]-mean)
+    return cov_matrix/N
+'''
+test = [[0.7,1],[2,3.4]]
+
+print(cov_matrix(test))
+'''
+
 
 
