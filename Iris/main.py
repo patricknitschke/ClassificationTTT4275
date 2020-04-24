@@ -2,8 +2,6 @@
 
 from sklearn.datasets import load_iris
 import numpy as np
-from numpy import array
-import random
 
 import iris
 
@@ -126,13 +124,13 @@ def task_2(data, target):
 
 
 def main():
-    """
+    
     print("Task 1a")
     task_1a()
     print("\n ----------------------------------- \n")
     print("Task 1b")
     task_1b()
-    """
+    
     print("\n ------------------------------------------ \n")
     print("Task 2")
     task_2(data, target)

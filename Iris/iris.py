@@ -1,4 +1,3 @@
-from sklearn.datasets import load_iris
 import numpy as np
 import random
 import matplotlib.pyplot as plt
@@ -133,5 +132,4 @@ def printHistograms(data, features):
     title = 'histogram for feature: ' + features[i]
     plt.legend(labels)
     plt.title(title)
-    #plt.savefig('/figures' + str(i) + '.png')
   plt.show()
