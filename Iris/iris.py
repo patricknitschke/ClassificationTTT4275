@@ -29,6 +29,26 @@ testing_target2 = target[80:100]
 testing_target3 = target[130:150]
 testing_target = [testing_target1, testing_target2, testing_target3]
 """
+def allocate_data(data, target):
+  training_data1 = data[0:30]
+  training_data2 = data[50:80]
+  training_data3 = data[100:130]
+  training_data = [training_data1,training_data2,training_data3]
+  training_target1 = target[0:30]
+  training_target2 = target[50:80]
+  training_target3 = target[100:130]
+  training_target = [training_target1, training_target2, training_target3]
+  
+  testing_data1 = data[30:50]
+  testing_data2 = data[80:100]
+  testing_data3 = data[130:150]
+  testing_data = [testing_data1,testing_data2,testing_data3]
+  testing_target1 = target[30:50]
+  testing_target2 = target[80:100]
+  testing_target3 = target[130:150]
+  testing_target = [testing_target1, testing_target2, testing_target3]
+  return training_data, training_target, testing_data, testing_target
+
 def sigmoid(z):
   return 1 / (1 + np.exp(-z))
 
