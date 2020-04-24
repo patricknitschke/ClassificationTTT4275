@@ -9,19 +9,22 @@ def extract_classes_map(filename):
         try:
             for line in lines:
                 line = line.split(" ")
-                for element in line:
-                    if element == "":
-                        line.remove(element)
+                
+
+                x_i = []
+                for element in range(1,len(line)):
+                    if line[element] != '':
+                        x_i.append(line[element])
+                    
                 if str(line[0][0]+line[0][-2]+line[0][-1]) not in class_map:
-                    class_map[str(line[0][0]+line[0][-2]+line[0][-1])] = line[1:]
+                    class_map[str(line[0][0]+line[0][-2]+line[0][-1])] = [x_i]
                 else:
-                    class_map[str(line[0][0]+line[0][-2]+line[0][-1])].append(line[1:])
-        except:
-            print("endOfFile")
+                    class_map[str(line[0][0]+line[0][-2]+line[0][-1])].append(x_i)
+        except IndexError:
+            print("End of File")
+
 
     return class_map
 
-classes_map  = extract_classes_map("data.dat")
+extract_classes_map("data.dat")
 
-for c in classes_map:
-    print(c)
