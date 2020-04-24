@@ -1,4 +1,4 @@
-#Task 1 a and b
+#Iris task 1 and 2
 
 from sklearn.datasets import load_iris
 import numpy as np
