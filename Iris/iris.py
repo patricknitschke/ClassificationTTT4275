@@ -1,6 +1,8 @@
 from sklearn.datasets import load_iris
 import numpy as np
 import random
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 """
 iris = load_iris()
@@ -95,7 +97,8 @@ def test_sequence(W,x_sequence,solution_sequence,n_classes,confusion_matrix):
 #W = find_W(training_data,3000,3,0.01)
 #print(W)
 
-def assignment_1_trainingset(x_sequence,t_sequence,n_classes,confusion_matrix):
+def assignment_1_trainingset(x_sequence,t_sequence,n_classes):
+  confusion_matrix = np.zeros((3,3))
   W = find_W(x_sequence, 3000,n_classes, 0.01)
   tot = 0
   correct = 0
@@ -107,7 +110,7 @@ def assignment_1_trainingset(x_sequence,t_sequence,n_classes,confusion_matrix):
     tot += w+c
   return correct/tot,matrix,W
 
-def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_classes, confusion_matrix):
+def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_classes):
   confusion_matrix = np.zeros((3, 3))
   #W = find_W(training_data, 3000, n_classes, 0.01)
   tot = 0
@@ -135,3 +138,15 @@ print(test_ratio)
 print(confusion_test)  
 
 """
+
+def printHistograms(data, features):
+  for i in range(0,4):
+    plt.figure(i)
+    for j in range(3):
+      correctdata = data[50*j : 50*(j+1), i]
+      sns.distplot(correctdata, kde=True, norm_hist=True)
+    labels = 'setosa', 'veriscolor', 'virginica'
+    title = 'histogram for feature: ' + features[i]
+    plt.legend(labels)
+    plt.title(title)
+  plt.show()
