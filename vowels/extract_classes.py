@@ -16,10 +16,10 @@ def extract_classes_map(filename):
                     if line[element] != '':
                         x_i.append(line[element])
                     
-                if str(line[0][0]+line[0][-2]+line[0][-1]) not in class_map:
-                    class_map[str(line[0][0]+line[0][-2]+line[0][-1])] = [x_i]
+                if str(line[0][-2]+line[0][-1]) not in class_map:
+                    class_map[str(line[0][-2]+line[0][-1])] = [x_i]
                 else:
-                    class_map[str(line[0][0]+line[0][-2]+line[0][-1])].append(x_i)
+                    class_map[str(line[0][-2]+line[0][-1])].append(x_i)
         except IndexError:
             print("End of File")
 

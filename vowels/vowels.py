@@ -31,27 +31,36 @@ def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
 def generate_mean_cov_map(filename,start,end):
     mean_cov_map = {}
     classes_map = ext.extract_classes_map(filename)
+    list_of_sounds = make_sequence(classes_map)
     for sound in classes_map:
         mean_cov_map[sound] =[sample_mean(classes_map[sound[start:end]])]
         
         mean_cov_map[sound].append(cov_matrix(classes_map[sound[start:end]]))
         
 
-    return mean_cov_map
+    return mean_cov_map,list_of_sounds
 
 print(generate_mean_cov_map("data.dat",0,10))
 
 
 def train_single_gaussian(start,end,x_size,diag = False):
-    probabilities = np.zeros((12, x_size))
-    mean_cov_map = generate_mean_cov_map("data.dat",start,end)
+    probabilities,list_sounds = np.zeros((12, x_size))
+    mean_cov_map,list_sounds = generate_mean_cov_map("data.dat",start,end)
     for i,sound in enumerate(mean_cov_map):
         if diag == True:
             sound[2] = np.diag(sound[2])
         rv = multivariate_normal(sound[0],sound[2])
         probabilities[i] = rv
 
-    return probabilities[i]
+    return probabilities[i],list_sounds
 
-def predict():
-    
+def make_sequence(sounds):
+    list_of_sounds= []
+    for sound in sounds:
+        list_of_sounds.append(sound)
+    return list_of_sounds
+
+def predict_not_diag(probability_sequence,sequence):
+    probs,lelist = train_single_gaussian(0,30,15,False)
+    i = np.argmax(probs)
+    return lelist[i]
