@@ -107,7 +107,6 @@ def task_2(data, target):
     #---------------Removing 3 features------------------------------
     data = np.delete(data, 0, axis=1)
     training_data, training_target, testing_data, testing_target = iris.allocate_data(data, target)
-    #print(training_data)
     
     print("\n\nTraining with 1 feature: ")
     training_ratio3, confusion_training3, W3 = iris.assignment_1_trainingset(training_data,training_target,3)
