@@ -63,7 +63,6 @@ def find_W(data, m_iterations,n_classes,alpha):
         for (data_k,t_k) in zip(data,t):
           grad_mse += update_mse_grad(data_k,t_k,W_prev,C)
         W = W_prev - alpha*grad_mse
-        #print(W)
     return W
     
 
@@ -71,7 +70,6 @@ def test_instance (W,x,solution,confusion):
   x = np.append(x,0)
   Wx = W@x
   answer = np.argmax(Wx)
-  #print("solution:",solution,"guess:",answer)
   confusion[solution][answer] += 1
   if solution == answer:
     return True
@@ -82,7 +80,6 @@ def test_instance (W,x,solution,confusion):
 def test_sequence(W,x_sequence,solution_sequence,n_classes,confusion_matrix):
   correct = 0
   wrong = 0
-  
   for nclass in range (len(x_sequence)): 
     if test_instance(W,x_sequence[nclass],solution_sequence[nclass],confusion_matrix):
       correct += 1
@@ -109,7 +106,6 @@ def assignment_1_trainingset(x_sequence,t_sequence,n_classes):
 
 def assignment_1_testingset(W, training_data, testing_data, testing_solution, n_classes):
   confusion_matrix = np.zeros((3, 3))
-  #W = find_W(training_data, 3000, n_classes, 0.01)
   tot = 0
   correct = 0
   wrong = 0
