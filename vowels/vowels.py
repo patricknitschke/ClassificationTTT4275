@@ -27,6 +27,11 @@ def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
         cov_matrix += (x-mean).T@((x)-mean)/sample_size
     return cov_matrix
 
+def make_sequence(sounds):
+    list_of_sounds= []
+    for sound in sounds:
+        list_of_sounds.append(sound)
+    return list_of_sounds
 
 def generate_mean_cov_map(filename,start,end):
     mean_cov_map = {}
@@ -40,12 +45,12 @@ def generate_mean_cov_map(filename,start,end):
 
     return mean_cov_map,list_of_sounds
 
-print(generate_mean_cov_map("data.dat",0,10))
+print(generate_mean_cov_map('data.dat',0,10))
 
 
 def train_single_gaussian(start,end,x_size,diag = False):
     probabilities,list_sounds = np.zeros((12, x_size))
-    mean_cov_map,list_sounds = generate_mean_cov_map("data.dat",start,end)
+    mean_cov_map,list_sounds = generate_mean_cov_map('data.dat',start,end)
     for i,sound in enumerate(mean_cov_map):
         if diag == True:
             sound[2] = np.diag(sound[2])
@@ -54,11 +59,6 @@ def train_single_gaussian(start,end,x_size,diag = False):
 
     return probabilities[i],list_sounds
 
-def make_sequence(sounds):
-    list_of_sounds= []
-    for sound in sounds:
-        list_of_sounds.append(sound)
-    return list_of_sounds
 
 def predict_not_diag(probability_sequence,sequence):
     probs,lelist = train_single_gaussian(0,30,15,False)
