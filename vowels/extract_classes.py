@@ -8,8 +8,7 @@ def extract_classes_map(filename):
         lines = file.read().split("\n")
         try:
             for line in lines:
-                line = line.split(" ")
-                
+                line = line.split(" ")                
 
                 x_i = []
                 for element in range(1,len(line)):

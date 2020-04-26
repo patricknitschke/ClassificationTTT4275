@@ -40,6 +40,7 @@ def generate_mean_cov_map(filename,start,end):
         mean_cov_map[sound].append(cov_matrix(classes_map[sound[start:end]]))
     return mean_cov_map,list_of_sounds
 
+
 def generate_x(filename,start,end):
     test_map = {}
     train_map={}
@@ -51,6 +52,7 @@ def generate_x(filename,start,end):
     return train_map,test_map
 
 def train_single_gaussian(start,end,x_size,diag = False):
+
     probabilities = np.zeros((12, x_size))
     mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
     train_map,test_map = generate_x("data.dat",0,70)
@@ -59,6 +61,7 @@ def train_single_gaussian(start,end,x_size,diag = False):
     for (sound,x) in zip(mean_cov_map,train_map):
         cov_matrix = mean_cov_map[sound][1]
         sample_mean = mean_cov_map[sound][0]
+
         if diag == True:
             cov_matrix = np.diag(np.diag(mean_cov_map[sound][1]))
         rv = multivariate_normal(mean = sample_mean,cov = cov_matrix)
