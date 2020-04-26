@@ -70,7 +70,7 @@ def single_gaussian(start,end,diag = False):
                 print(np.argmax(probability_vector))
                 print (sound_list[np.argmax(probability_vector)],"sound:",iterate_class)
 
-    return probability_vector,sound_list
+
 
 
 
