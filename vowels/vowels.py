@@ -51,35 +51,29 @@ def generate_x(filename,start,end):
 
     return train_map,test_map
 
-def train_single_gaussian(start,end,x_size,diag = False):
+def single_gaussian(start,end,diag = False):
 
-    probabilities = np.zeros((12, x_size))
+    
     mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
     train_map,test_map = generate_x("data.dat",0,70)
+    probability_vector = np.zeros((12,1))
     
-    i = 0 
-    for (sound,x) in zip(mean_cov_map,train_map):
-        cov_matrix = mean_cov_map[sound][1]
-        sample_mean = mean_cov_map[sound][0]
+    for iterate_class in test_map:
+        for sample in range(30):
+            for i,sound in enumerate(mean_cov_map):
+                cov_matrix = mean_cov_map[sound][1]
+                sample_mean = mean_cov_map[sound][0]
+                if diag == True:
+                    cov_matrix = np.diag(np.diag(mean_cov_map[sound][1]))
+                probability = multivariate_normal.pdf(test_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix)
+                probability_vector[i] = probability
+                print(np.argmax(probability_vector))
+                print (sound_list[np.argmax(probability_vector)],"sound:",iterate_class)
 
-        if diag == True:
-            cov_matrix = np.diag(np.diag(mean_cov_map[sound][1]))
-        rv = multivariate_normal(mean = sample_mean,cov = cov_matrix)
-        probabilities[i] = rv.pdf(train_map[x])
-        i+= 1
-
-    return probabilities,sound_list
-
-
-
-def predict_not_diag():
-    list_of_indeces = []
-    prob,sound_list = train_single_gaussian(0,30,15,True)
-    for i in range (len(prob)) :
-        index_max = np.argmax(prob[i])
-        print(prob)
-        list_of_indeces.append(index_max)
-    return list_of_indeces
+    return probability_vector,sound_list
 
 
-print(predict_not_diag())
+
+
+
+print(single_gaussian(0,30,True))
