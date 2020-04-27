@@ -55,7 +55,7 @@ def train_test_single_gaussian(start,end,diag = False):
     mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
     train_map,test_map = generate_x("data.dat",start,end)
 
-    #---------------------Trainig------------------------------
+    #---------------------Training------------------------------
     probability_vector = np.empty((12,1))
     correct =  0
     wrong = 0
@@ -87,6 +87,7 @@ def train_test_single_gaussian(start,end,diag = False):
     print("Training : ")
     print(confusion_matrix)
     print(correct/total)
+    print(total)
 
     #-----------------------------Testing------------------------------
     probability_vector = np.empty((12,1))
