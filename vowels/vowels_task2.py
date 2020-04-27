@@ -2,6 +2,7 @@ import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
 from sklearn.mixture import GaussianMixture as GMM
+import latexconfusiontable as la
 
 
 def sample_mean(dataset):
@@ -63,7 +64,7 @@ def train_test_GMM(start,end, n_components):
     confusion_matrix = np.zeros((12,12))
     true_index = 0
     probability = 0
-
+    print("Trainingingi")
     for iterate_class in train_map:
         for sample in range(len(train_map[iterate_class])):
             for i,sound in enumerate(mean_cov_map):
@@ -89,7 +90,11 @@ def train_test_GMM(start,end, n_components):
     print("Training : ")
     print(confusion_matrix)
     print(correct/total)
+    return confusion_matrix
 
 
 
-train_test_GMM(0,70,3)
+
+cm = train_test_GMM(0,70,3)
+
+la.print_confusion(cm)
