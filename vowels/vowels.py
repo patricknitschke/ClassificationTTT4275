@@ -10,7 +10,7 @@ def sample_mean(dataset):
     for vector in range (sample_size):
         for element in range (N):
             if element != "":
-                x_sum[element] += (float(dataset[vector][element]))
+                x_sum[element] += (int(dataset[vector][element]))
     for element in range(len(x_sum)):
         x_sum[element] /= sample_size
     return x_sum
