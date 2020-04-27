@@ -7,7 +7,6 @@ def sample_mean(dataset):
     sample_size = len(dataset)
     N = len(dataset[0])
     x_sum = [0]*N
-    
     for vector in range (sample_size):
         for element in range (N):
             x_sum[element] += (int(dataset[vector][element]))
@@ -51,11 +50,11 @@ def generate_x(filename,start,end):
 
     return train_map,test_map
 
-def single_gaussian(start,end,diag = False):
-
-    
+def train_test_single_gaussian(start,end,diag = False):
     mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
     train_map,test_map = generate_x("data.dat",start,end)
+
+    #---------------------Trainig------------------------------
     probability_vector = np.empty((12,1))
     correct =  0
     wrong = 0
@@ -63,6 +62,40 @@ def single_gaussian(start,end,diag = False):
     confusion_matrix = np.zeros((12,12))
     true_index = 0
     for iterate_class in train_map:
+        for sample in range(len(train_map[iterate_class])):
+            for i,sound in enumerate(mean_cov_map):
+                cov_matrix = mean_cov_map[sound][1]
+                sample_mean = mean_cov_map[sound][0]
+               
+                if diag == True:
+                    cov_matrix = np.diag(np.diag(mean_cov_map[sound][1]))
+                    probability = multivariate_normal.pdf(train_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix)
+                else:
+                    probability = multivariate_normal.pdf(train_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix,allow_singular = True)
+                probability_vector[i] = probability
+            predicted_index = np.argmax(probability_vector)
+            predicted_sound = sound_list[predicted_index]
+            true_guess = iterate_class
+            total += 1
+            if true_guess == predicted_sound:
+                correct += 1
+            else:
+                wrong += 1
+            confusion_matrix[true_index][predicted_index] += 1
+        true_index += 1
+    print("Training : ")
+    print(confusion_matrix)
+    print(correct/total)
+
+    #-----------------------------Testing------------------------------
+    probability_vector = np.empty((12,1))
+    correct =  0
+    wrong = 0
+    total = 0
+    confusion_matrix = np.zeros((12,12))
+    true_index = 0
+
+    for iterate_class in test_map:
         for sample in range(len(test_map[iterate_class])):
             for i,sound in enumerate(mean_cov_map):
                 cov_matrix = mean_cov_map[sound][1]
@@ -84,6 +117,7 @@ def single_gaussian(start,end,diag = False):
                 wrong += 1
             confusion_matrix[true_index][predicted_index] += 1
         true_index += 1
+    print("Testing : ")
     print(confusion_matrix)
     print(correct/total)
 
@@ -91,6 +125,5 @@ def single_gaussian(start,end,diag = False):
 
 
 
-
-print(single_gaussian(0,70,True))
+train_test_single_gaussian(0,70,True)
 
