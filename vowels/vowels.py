@@ -20,7 +20,7 @@ def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
     mean = sample_mean(dataset)
     cov_matrix = np.zeros((N,N))
     x = np.asfarray(dataset, float)
-    cov_matrix = np.dot((x-mean).T,(x-mean))/(sample_size - 1)  
+    cov_matrix = np.dot((x-mean).T,(x-mean))/(sample_size-1)  
     return cov_matrix
 
 def make_sequence(sounds):
@@ -53,38 +53,42 @@ def single_gaussian(start,end,diag = False):
 
     
     mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
-    train_map,test_map = generate_x("data.dat",0,70)
+    train_map,test_map = generate_x("data.dat",start,end)
     probability_vector = np.empty((12,1))
     correct =  0
     wrong = 0
     total = 0
+    confusion_matrix = np.zeros((12,12))
+    true_index = 0
     for iterate_class in train_map:
-        for sample in range(len(train_map[iterate_class])):
+        for sample in range(len(test_map[iterate_class])):
             for i,sound in enumerate(mean_cov_map):
                 cov_matrix = mean_cov_map[sound][1]
                 sample_mean = mean_cov_map[sound][0]
                
                 if diag == True:
                     cov_matrix = np.diag(np.diag(mean_cov_map[sound][1]))
-                    probability = multivariate_normal.pdf(train_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix)
+                    probability = multivariate_normal.pdf(test_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix)
                 else:
-                    probability = multivariate_normal.pdf(train_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix,allow_singular = True)
+                    probability = multivariate_normal.pdf(test_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix,allow_singular = True)
                 probability_vector[i] = probability
                 predicted_index = np.argmax(probability_vector)
                 predicted_sound = sound_list[predicted_index]
                 true_guess = iterate_class
-               
                 total += 1
                 if true_guess == predicted_sound:
                     correct += 1
                 else:
                     wrong += 1
-        print(correct/total)
+                confusion_matrix[predicted_index][true_index] += 1
+        true_index += 1
+    print(confusion_matrix)
+    print(correct/total)
 
 
 
 
 
 
-print(single_gaussian(0,70,False))
+print(single_gaussian(0,70,True))
 
