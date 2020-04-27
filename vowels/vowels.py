@@ -9,23 +9,21 @@ def sample_mean(dataset):
     x_sum = [0]*N
     for vector in range (sample_size):
         for element in range (N):
-            if element != "":
-                x_sum[element] += (int(dataset[vector][element]))
+            x_sum[element] += (int(dataset[vector][element]))
     for element in range(len(x_sum)):
         x_sum[element] /= sample_size
     return x_sum
 
 def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
+    print(dataset)
     N = len(dataset[0])
     sample_size = len(dataset)
     mean = sample_mean(dataset)
     cov_matrix = np.zeros((N,N))
 
     x = np.asfarray(dataset, float)
-    cov_matrix = ((x-mean).T@(x-mean))/(sample_size - 1)    
-    #for sample in range (N):
-    #    x=np.asfarray(dataset[sample],float)
-    #    cov_matrix += (x-mean).T@((x)-mean)/sample_size
+    cov_matrix = np.dot((x-mean).T,(x-mean))/(sample_size - 1)  
+    
     print(cov_matrix)
     return cov_matrix
 
@@ -79,7 +77,7 @@ def single_gaussian(start,end,diag = False):
                 predicted_index = np.argmax(probability_vector)
                 predicted_sound = sound_list[predicted_index]
                 true_guess = iterate_class
-                print("true:", true_guess, "guessed:",predicted_sound)
+               
                 total += 1
                 if true_guess == predicted_sound:
                     correct += 1
