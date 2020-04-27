@@ -45,8 +45,9 @@ def generate_x(filename,start,end):
     train_map={}
     classes_map = ext.extract_classes_map(filename)
     for sound in classes_map:
-        train_map[sound] = classes_map[sound][start:end]
-        test_map[sound] = classes_map[sound][end:]
+        train,test = equal_representation(classes_map[sound])
+        test_map[sound] = test
+        train_map[sound] = train
 
     return train_map,test_map
 
@@ -120,10 +121,30 @@ def train_test_single_gaussian(start,end,diag = False):
     print("Testing : ")
     print(confusion_matrix)
     print(correct/total)
+    print(total)
+
+def equal_representation(dataset):
+    test_set = []
+    training_set = []
+    for man in range(0,20): #20
+        training_set.append(dataset[man])
+    for woman in range(46,66): #20
+        training_set.append(dataset[woman])
+    for boy in range(93,113): #20
+        training_set.append(dataset[boy])
+    for girl in range(120,131): #10
+        training_set.append(dataset[girl])
+    for man in range(20,46): #26
+        test_set.append(dataset[man])
+    for woman in range(66,93): #27
+        test_set.append(dataset[woman])
+    for boy in range(113,120): #7
+        test_set.append(dataset[boy])
+    for girl in range(131,139): #8
+        test_set.append(dataset[girl]) #67 in total
+    return training_set,test_set
 
 
 
-
-
-train_test_single_gaussian(0,70,True)
+train_test_single_gaussian(0,70,False)
 
