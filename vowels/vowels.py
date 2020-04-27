@@ -7,11 +7,13 @@ def sample_mean(dataset):
     sample_size = len(dataset)
     N = len(dataset[0])
     x_sum = [0]*N
+    
     for vector in range (sample_size):
         for element in range (N):
             x_sum[element] += (int(dataset[vector][element]))
     for element in range(len(x_sum)):
         x_sum[element] /= sample_size
+        
     return x_sum
 
 def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
@@ -80,7 +82,7 @@ def single_gaussian(start,end,diag = False):
                     correct += 1
                 else:
                     wrong += 1
-                confusion_matrix[predicted_index][true_index] += 1
+            confusion_matrix[true_index][predicted_index] += 1
         true_index += 1
     print(confusion_matrix)
     print(correct/total)
@@ -90,5 +92,5 @@ def single_gaussian(start,end,diag = False):
 
 
 
-print(single_gaussian(0,70,True))
+print(single_gaussian(0,70,False))
 

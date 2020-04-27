@@ -9,6 +9,8 @@ iris_data = load_iris()
 target = iris_data.target
 data = iris_data.data
 
+print("Target names: {}".format(iris_data['target_names']))
+
 def task_1a():
     training_data1 = data[0:30]
     training_data2 = data[50:80]
