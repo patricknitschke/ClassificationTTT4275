@@ -20,9 +20,13 @@ def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
     sample_size = len(dataset)
     mean = sample_mean(dataset)
     cov_matrix = np.zeros((N,N))
-    for sample in range (N):
-        x=np.asfarray(dataset[sample],float)
-        cov_matrix += (x-mean).T@((x)-mean)/sample_size
+
+    x = np.asfarray(dataset, float)
+    cov_matrix = ((x-mean).T@(x-mean))/(sample_size - 1)    
+    #for sample in range (N):
+    #    x=np.asfarray(dataset[sample],float)
+    #    cov_matrix += (x-mean).T@((x)-mean)/sample_size
+    print(cov_matrix)
     return cov_matrix
 
 def make_sequence(sounds):
