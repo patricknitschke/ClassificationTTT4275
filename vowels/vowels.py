@@ -74,14 +74,14 @@ def single_gaussian(start,end,diag = False):
                 else:
                     probability = multivariate_normal.pdf(test_map[iterate_class][sample],mean = sample_mean,cov = cov_matrix,allow_singular = True)
                 probability_vector[i] = probability
-                predicted_index = np.argmax(probability_vector)
-                predicted_sound = sound_list[predicted_index]
-                true_guess = iterate_class
-                total += 1
-                if true_guess == predicted_sound:
-                    correct += 1
-                else:
-                    wrong += 1
+            predicted_index = np.argmax(probability_vector)
+            predicted_sound = sound_list[predicted_index]
+            true_guess = iterate_class
+            total += 1
+            if true_guess == predicted_sound:
+                correct += 1
+            else:
+                wrong += 1
             confusion_matrix[true_index][predicted_index] += 1
         true_index += 1
     print(confusion_matrix)
@@ -92,5 +92,5 @@ def single_gaussian(start,end,diag = False):
 
 
 
-print(single_gaussian(0,70,False))
+print(single_gaussian(0,70,True))
 
