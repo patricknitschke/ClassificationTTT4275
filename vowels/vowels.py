@@ -15,16 +15,12 @@ def sample_mean(dataset):
     return x_sum
 
 def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
-    print(dataset)
     N = len(dataset[0])
     sample_size = len(dataset)
     mean = sample_mean(dataset)
     cov_matrix = np.zeros((N,N))
-
     x = np.asfarray(dataset, float)
     cov_matrix = np.dot((x-mean).T,(x-mean))/(sample_size - 1)  
-    
-    print(cov_matrix)
     return cov_matrix
 
 def make_sequence(sounds):
@@ -90,5 +86,5 @@ def single_gaussian(start,end,diag = False):
 
 
 
-print(single_gaussian(0,70,True))
+print(single_gaussian(0,70,False))
 
