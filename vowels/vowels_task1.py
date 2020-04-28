@@ -59,7 +59,7 @@ def train_test_single_gaussian(start,end,diag = False):
     correct =  0
     wrong = 0
     total = 0
-    confusion_matrix = np.zeros((12,12))
+    confusion_matrix_train = np.zeros((12,12))
     true_index = 0
     for iterate_class in train_map:
         for sample in range(len(train_map[iterate_class])):
@@ -81,10 +81,10 @@ def train_test_single_gaussian(start,end,diag = False):
                 correct += 1
             else:
                 wrong += 1
-            confusion_matrix[true_index][predicted_index] += 1
+            confusion_matrix_train[true_index][predicted_index] += 1
         true_index += 1
     print("Training : ")
-    print(confusion_matrix)
+    print(confusion_matrix_train)
     print(correct/total)
     print(total)
 
@@ -93,7 +93,7 @@ def train_test_single_gaussian(start,end,diag = False):
     correct =  0
     wrong = 0
     total = 0
-    confusion_matrix = np.zeros((12,12))
+    confusion_matrix_test = np.zeros((12,12))
     true_index = 0
 
     for iterate_class in test_map:
@@ -116,13 +116,13 @@ def train_test_single_gaussian(start,end,diag = False):
                 correct += 1
             else:
                 wrong += 1
-            confusion_matrix[true_index][predicted_index] += 1
+            confusion_matrix_test[true_index][predicted_index] += 1
         true_index += 1
     print("Testing : ")
-    print(confusion_matrix)
+    print(confusion_matrix_test)
     print(correct/total)
     print(total)
-    return confusion_matrix
+    return confusion_matrix_train, confusion_matrix_test
 
 def equal_representation(dataset):
     test_set = []
