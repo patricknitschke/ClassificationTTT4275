@@ -1,7 +1,6 @@
 import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
-import latexconfusiontable as la
 
 
 def sample_mean(dataset):
@@ -31,9 +30,8 @@ def make_sequence(sounds):
         list_of_sounds.append(sound)
     return list_of_sounds
 
-def generate_mean_cov_map(filename,start,end):
+def generate_mean_cov_map(classes_map,start,end):
     mean_cov_map = {}
-    classes_map = ext.extract_classes_map(filename)
     list_of_sounds = make_sequence(classes_map)
     for sound in classes_map:
         mean_cov_map[sound] =[sample_mean(classes_map[sound][start:end])]
@@ -53,15 +51,15 @@ def generate_x(filename,start,end):
     return train_map,test_map
 
 def train_test_single_gaussian(start,end,diag = False):
-    mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
     train_map,test_map = generate_x("data.dat",start,end)
+    mean_cov_map,sound_list = generate_mean_cov_map(train_map,start,end)
 
     #---------------------Training------------------------------
     probability_vector = np.empty((12,1))
     correct =  0
     wrong = 0
     total = 0
-    confusion_matrix = np.zeros((12,12))
+    confusion_matrix_train = np.zeros((12,12))
     true_index = 0
     for iterate_class in train_map:
         for sample in range(len(train_map[iterate_class])):
@@ -83,10 +81,10 @@ def train_test_single_gaussian(start,end,diag = False):
                 correct += 1
             else:
                 wrong += 1
-            confusion_matrix[true_index][predicted_index] += 1
+            confusion_matrix_train[true_index][predicted_index] += 1
         true_index += 1
     print("Training : ")
-    print(confusion_matrix)
+    print(confusion_matrix_train)
     print(correct/total)
     print(total)
 
@@ -95,7 +93,7 @@ def train_test_single_gaussian(start,end,diag = False):
     correct =  0
     wrong = 0
     total = 0
-    confusion_matrix = np.zeros((12,12))
+    confusion_matrix_test = np.zeros((12,12))
     true_index = 0
 
     for iterate_class in test_map:
@@ -118,13 +116,13 @@ def train_test_single_gaussian(start,end,diag = False):
                 correct += 1
             else:
                 wrong += 1
-            confusion_matrix[true_index][predicted_index] += 1
+            confusion_matrix_test[true_index][predicted_index] += 1
         true_index += 1
     print("Testing : ")
-    print(confusion_matrix)
+    print(confusion_matrix_test)
     print(correct/total)
     print(total)
-    return confusion_matrix
+    return confusion_matrix_train, confusion_matrix_test
 
 def equal_representation(dataset):
     test_set = []
@@ -143,12 +141,7 @@ def equal_representation(dataset):
         test_set.append(dataset[woman])
     for boy in range(113,120): #7
         test_set.append(dataset[boy])
-    for girl in range(130,139): #8
-        test_set.append(dataset[girl]) #67 in total
+    for girl in range(130,139): #9
+        test_set.append(dataset[girl])
     return training_set,test_set
 
-
-
-confusion_matrix = train_test_single_gaussian(0,70,False)
-
-la.print_confusion(confusion_matrix)

@@ -25,5 +25,4 @@ def extract_classes_map(filename):
 
     return class_map
 
-extract_classes_map("data.dat")
 
