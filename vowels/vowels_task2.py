@@ -68,7 +68,7 @@ def train_test_GMM(start,end, n_components):
     confusion_matrix = np.zeros((12,12))
     
     probability = 0
-    print("Trainingingi")
+    print("Training GMM")
     print(len(train_map["uw"]))
     probability_vectors = np.empty((12,len(train_map["uw"])))
     predicted_indeces = np.empty((12,len(train_map["uw"])))
