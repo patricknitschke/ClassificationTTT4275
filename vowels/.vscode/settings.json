@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "C:\\Users\\Patrick Nitschke\\anaconda3\\python.exe"
+=======
+    "python.pythonPath": "/usr/bin/python3"
+>>>>>>> 4e59fc192d7a8df39d746836cbadc4b8a6effa1f
 }

@@ -5,12 +5,20 @@ import latexconfusiontable as lct
 
 def main():
     print("Task 1")
-    conf1 = vt1.train_test_single_gaussian(0,70,False)
-    #lct.print_confusion(conf1)
+    conf1_train, conf1_test = vt1.train_test_single_gaussian(0,70,False)
+    #lct.print_confusion(conf1_train)
+    #lct.print_confusion(conf1_test)
     print("------------------------------------------")
-    print("Task 2")
-    conf2 = vt2.train_test_GMM(0,70,3)
-    #lct.print_confusion(conf2)
+
+    print("Task 2, 2 gaussians")
+    gmm2_train, gmm2_test = vt2.train_test_GMM(0,70,2)
+    #lct.print_confusion(gmm2_train)
+    #lct.print_confusion(gmm2_test)
+
+    print("Task 2, 3 gaussians")
+    gmm3_train, gmm3_test = vt2.train_test_GMM(0,70,3)
+    #lct.print_confusion(gmm3_train)
+    #lct.print_confusion(gmm3_test)
 
 
 main()

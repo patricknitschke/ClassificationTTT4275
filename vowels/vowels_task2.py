@@ -69,13 +69,13 @@ def train_test_GMM(start,end, n_components):
         confusion_matrix_train[true_train[index]][int(predict_train[index])] += 1
         total += 1
     ratio_training = correct/total
-    print("training ratio:",ratio_training)
     print(confusion_matrix_train)
+    print("training ratio:",ratio_training)
 
 
    
     
-    return confusion_matrix_train
+    return confusion_matrix_train, confusion_matrix_test
 
 
 
