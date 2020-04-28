@@ -19,15 +19,13 @@ def generate_sound_list(train_map):
 def train_test_GMM(start,end, n_components):
     train_map,test_map = v.generate_x("data.dat",0,70)
     sound_list = generate_sound_list(train_map)
-    #---------------------Training------------------------------
     
-    correct =  0
-    wrong = 0
-    total = 0
-    confusion_matrix_train = np.zeros((12,12))
-    x = map_join_array(train_map)
+
+    x_train = map_join_array(train_map)
+    x_test = map_join_array(test_map)
     print("Training GMM")
-    probability_vectors = np.empty((12,x.shape[0]))
+    probabilities_train = np.empty((12,x_train.shape[0]))
+    probabilities_test = np.empty((12,x_test.shape[0]))
     
 
     for i,sound in enumerate(train_map):
@@ -35,22 +33,48 @@ def train_test_GMM(start,end, n_components):
         gmm.fit(train_map[sound], sound_list)
         for j in range(n_components):
             N = multivariate_normal(mean=gmm.means_[j], cov=gmm.covariances_[j], allow_singular=True)
-            probability_vectors[i] += gmm.weights_[j] * N.pdf(x)
+            probabilities_train[i] += gmm.weights_[j] * N.pdf(x_train)
+            probabilities_test[i] += gmm.weights_[j] * N.pdf(x_test)
+
     
-    predicted_indeces = np.argmax(probability_vectors,axis = 0)
-    true = np.asarray([i for i in range (12) for _ in range(70)])
-    for index in range(len(predicted_indeces)):
-        if int(predicted_indeces[index]) == true[index]:
+    confusion_matrix_train = np.zeros((12,12))
+    confusion_matrix_test = np.zeros((12,12))
+    
+    predict_test = np.argmax(probabilities_test,axis = 0)
+    predict_train = np.argmax(probabilities_train,axis = 0)
+    true_test = np.asarray([i for i in range (12) for _ in range(70)])
+    true_train = np.asarray([i for i in range(12) for _ in range(70)])
+    correct =  0
+    wrong = 0
+    total = 0
+    for index in range(len(predict_test)):
+        if int(predict_test[index]) == true_test[index]:
                 correct += 1
         else:
             wrong += 1
-        confusion_matrix_train[true[index]][int(predicted_indeces[index])] += 1
+        confusion_matrix_test[true_test[index]][int(predict_test[index])] += 1
         total += 1
-
-
-    print("Training : ")
+    ratio_test = correct/total
+    correct = 0
+    wrong = 0
+    total = 0
+    print("Train: ")
+    print(confusion_matrix_test)
+    print("Testing ratio:",ratio_test)
+    for index in range(len(predict_train)):
+        if int(predict_train[index]) == true_train[index]:
+            correct += 1
+        else:
+            wrong += 1
+        confusion_matrix_train[true_train[index]][int(predict_train[index])] += 1
+        total += 1
+    ratio_training = correct/total
+    print("training ratio:",ratio_training)
     print(confusion_matrix_train)
-    print(correct/total)
+
+
+   
+    
     return confusion_matrix_train
 
 

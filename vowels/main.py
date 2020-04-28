@@ -5,7 +5,7 @@ import latexconfusiontable as lct
 
 def main():
     print("Task 1")
-    #conf1 = vt1.train_test_single_gaussian(0,70,False)
+    conf1 = vt1.train_test_single_gaussian(0,70,False)
     #lct.print_confusion(conf1)
     print("------------------------------------------")
     print("Task 2")
