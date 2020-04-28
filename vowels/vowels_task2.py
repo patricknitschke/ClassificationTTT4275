@@ -2,95 +2,54 @@ import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
 from sklearn.mixture import GaussianMixture as GMM
+import vowels_task1 as v
 
 
-
-
-def sample_mean(dataset):
-    sample_size = len(dataset)
-    N = len(dataset[0])
-    x_sum = [0]*N
-    for vector in range (sample_size):
-        for element in range (N):
-            x_sum[element] += (int(dataset[vector][element]))
-    for element in range(len(x_sum)):
-        x_sum[element] /= sample_size
-        
-    return x_sum
-
-def cov_matrix(dataset): #CROSS CHECK THAT THIS IS CORRECT!!
-    N = len(dataset[0])
-    sample_size = len(dataset)
-    mean = sample_mean(dataset)
-    cov_matrix = np.zeros((N,N))
-    x = np.asfarray(dataset, float)
-    cov_matrix = np.dot((x-mean).T,(x-mean))/(sample_size-1)  
-    return cov_matrix
-
-def make_sequence(sounds):
-    list_of_sounds= []
-    for sound in sounds:
-        list_of_sounds.append(sound)
-    return list_of_sounds
-
-def generate_mean_cov_map(filename,start,end):
-
-    mean_cov_map = {}
-    
-    classes_map = ext.extract_classes_map(filename)
-    
-    list_of_sounds = make_sequence(classes_map)
-    for sound in classes_map:
-        mean_cov_map[sound] =[sample_mean(classes_map[sound][start:end])]
-        mean_cov_map[sound].append(cov_matrix(classes_map[sound][start:end]))
-    return mean_cov_map,list_of_sounds
-
-
-def generate_x(filename,start,end):
-    test_map = {}
-    train_map={}
-    classes_map = ext.extract_classes_map(filename)
-    for sound in classes_map:
-        train_map[sound] = classes_map[sound][start:end]
-        test_map[sound] = classes_map[sound][end:]
-
-    return train_map,test_map
+def map_join_array(type_map):
+    x = []
+    for sound in type_map:
+        x.extend(type_map[sound[0:70]])
+    return np.asfarray(x)
+def generate_sound_list(train_map):
+    sounds = []
+    for sound in train_map:
+        sounds.append(sound)
+    return sounds
 
 def train_test_GMM(start,end, n_components):
-    mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
-    train_map,test_map = generate_x("data.dat",start,end)
-
+    train_map,test_map = v.generate_x("data.dat",0,70)
+    sound_list = generate_sound_list(train_map)
     #---------------------Training------------------------------
     
     correct =  0
     wrong = 0
     total = 0
     confusion_matrix_train = np.zeros((12,12))
-    
-    probability = 0
+    x = map_join_array(train_map)
     print("Training GMM")
-    print(len(train_map["uw"]))
-    probability_vectors = np.empty((12,len(train_map["uw"])))
-    predicted_indeces = np.empty((12,len(train_map["uw"])))
+    print(x)
+    probability_vectors = np.empty((12,x.shape[0]))
+    
+
     for i,sound in enumerate(train_map):
-        x = np.asfarray(train_map[sound], float)
         gmm = GMM(n_components=n_components, covariance_type='diag', reg_covar=1e-4, random_state=0)
         gmm.fit(train_map[sound], sound_list)
         for j in range(n_components):
             N = multivariate_normal(mean=gmm.means_[j], cov=gmm.covariances_[j], allow_singular=True)
-            probability += gmm.weights_[j] * N.pdf(x)
-        
-        
-        probability_vectors[i] = probability 
-        predicted_indeces[i] = np.argmax(probability_vectors,axis = 0)
-    for j,sound in enumerate(predicted_indeces):
-        for guess in sound:
-            if int(guess) == j:
-                    correct += 1
-            else:
-                wrong += 1
-            confusion_matrix_train[j][int(guess)] += 1
-            total += 1
+            probability_vectors[i] += gmm.weights_[j] * N.pdf(x)
+    
+    predicted_indeces = np.argmax(probability_vectors,axis = 0)
+    true_index = 0
+    for index in range(len(predicted_indeces)):
+        print("guess:",predicted_indeces[index],"index:",true_index)
+        if int(predicted_indeces[index]) == true_index:
+                correct += 1
+        else:
+            wrong += 1
+        confusion_matrix_train[true_index][int(predicted_indeces[index])] += 1
+        total += 1
+        if (index%70 == 0 and index != 0):
+            true_index += 1
 
     print("Training : ")
     print(confusion_matrix_train)
