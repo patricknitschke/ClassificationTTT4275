@@ -1,6 +1,7 @@
 import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
+import latexconfusiontable as la
 
 
 def sample_mean(dataset):
@@ -54,7 +55,7 @@ def train_test_single_gaussian(start,end,diag = False):
     train_map,test_map = generate_x("data.dat",start,end)
     mean_cov_map,sound_list = generate_mean_cov_map(train_map,start,end)
 
-    #---------------------Trainig------------------------------
+    #---------------------Training------------------------------
     probability_vector = np.empty((12,1))
     correct =  0
     wrong = 0
@@ -86,6 +87,7 @@ def train_test_single_gaussian(start,end,diag = False):
     print("Training : ")
     print(confusion_matrix)
     print(correct/total)
+    print(total)
 
     #-----------------------------Testing------------------------------
     probability_vector = np.empty((12,1))
@@ -121,6 +123,7 @@ def train_test_single_gaussian(start,end,diag = False):
     print(confusion_matrix)
     print(correct/total)
     print(total)
+    return confusion_matrix
 
 def equal_representation(dataset):
     test_set = []
@@ -131,7 +134,7 @@ def equal_representation(dataset):
         training_set.append(dataset[woman])
     for boy in range(93,113): #20
         training_set.append(dataset[boy])
-    for girl in range(120,131): #10
+    for girl in range(120,130): #10
         training_set.append(dataset[girl])
     for man in range(20,46): #26
         test_set.append(dataset[man])
@@ -139,11 +142,12 @@ def equal_representation(dataset):
         test_set.append(dataset[woman])
     for boy in range(113,120): #7
         test_set.append(dataset[boy])
-    for girl in range(131,139): #8
+    for girl in range(130,139): #8
         test_set.append(dataset[girl]) #67 in total
     return training_set,test_set
 
 
 
-train_test_single_gaussian(0,70,False)
+confusion_matrix = train_test_single_gaussian(0,70,False)
 
+la.print_confusion(confusion_matrix)
