@@ -30,9 +30,8 @@ def make_sequence(sounds):
         list_of_sounds.append(sound)
     return list_of_sounds
 
-def generate_mean_cov_map(filename,start,end):
+def generate_mean_cov_map(classes_map,start,end):
     mean_cov_map = {}
-    classes_map = ext.extract_classes_map(filename)
     list_of_sounds = make_sequence(classes_map)
     for sound in classes_map:
         mean_cov_map[sound] =[sample_mean(classes_map[sound][start:end])]
@@ -52,8 +51,8 @@ def generate_x(filename,start,end):
     return train_map,test_map
 
 def train_test_single_gaussian(start,end,diag = False):
-    mean_cov_map,sound_list = generate_mean_cov_map("data.dat",start,end)
     train_map,test_map = generate_x("data.dat",start,end)
+    mean_cov_map,sound_list = generate_mean_cov_map(train_map,start,end)
 
     #---------------------Trainig------------------------------
     probability_vector = np.empty((12,1))

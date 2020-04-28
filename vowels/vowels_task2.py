@@ -2,6 +2,9 @@ import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
 from sklearn.mixture import GaussianMixture as GMM
+import vowels as v
+
+
 
 
 def sample_mean(dataset):
