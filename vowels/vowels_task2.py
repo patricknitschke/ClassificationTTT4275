@@ -65,7 +65,7 @@ def train_test_GMM(start,end, n_components):
     correct =  0
     wrong = 0
     total = 0
-    confusion_matrix = np.zeros((12,12))
+    confusion_matrix_train = np.zeros((12,12))
     
     probability = 0
     print("Training GMM")
@@ -89,13 +89,13 @@ def train_test_GMM(start,end, n_components):
                     correct += 1
             else:
                 wrong += 1
-            confusion_matrix[j][int(guess)] += 1
+            confusion_matrix_train[j][int(guess)] += 1
             total += 1
 
     print("Training : ")
-    print(confusion_matrix)
+    print(confusion_matrix_train)
     print(correct/total)
-    return confusion_matrix
+    return confusion_matrix_train
 
 
 
