@@ -2,13 +2,9 @@ import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
 from sklearn.mixture import GaussianMixture as GMM
-<<<<<<< HEAD
 import vowels as v
-
-
-=======
 import latexconfusiontable as la
->>>>>>> 0bd4337b2adbefd54b4122793a5b31b0f562e79c
+
 
 
 def sample_mean(dataset):
@@ -39,8 +35,11 @@ def make_sequence(sounds):
     return list_of_sounds
 
 def generate_mean_cov_map(filename,start,end):
+
     mean_cov_map = {}
+    '''
     classes_map = ext.extract_classes_map(filename)
+    '''
     list_of_sounds = make_sequence(classes_map)
     for sound in classes_map:
         mean_cov_map[sound] =[sample_mean(classes_map[sound][start:end])]
