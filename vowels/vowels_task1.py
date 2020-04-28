@@ -1,7 +1,6 @@
 import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
-import latexconfusiontable as la
 
 
 def sample_mean(dataset):
@@ -146,8 +145,3 @@ def equal_representation(dataset):
         test_set.append(dataset[girl]) #67 in total
     return training_set,test_set
 
-
-
-#confusion_matrix = train_test_single_gaussian(0,70,False)
-
-#la.print_confusion(confusion_matrix)
