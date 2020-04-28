@@ -61,36 +61,37 @@ def train_test_GMM(start,end, n_components):
     train_map,test_map = generate_x("data.dat",start,end)
 
     #---------------------Training------------------------------
-    probability_vector = np.empty((12,1))
+    
     correct =  0
     wrong = 0
     total = 0
     confusion_matrix = np.zeros((12,12))
-    true_index = 0
+    
     probability = 0
     print("Trainingingi")
-    for iterate_class in train_map:
-        for sample in range(len(train_map[iterate_class])):
-            for i,sound in enumerate(mean_cov_map):
-
-                x = np.asfarray(train_map[sound], float)
-                gmm = GMM(n_components=n_components, covariance_type='diag', reg_covar=1e-4, random_state=0)
-                gmm.fit(x, iterate_class)
-                for j in range(n_components):
-                    N = multivariate_normal(mean=gmm.means_[j], cov=gmm.covariances_[j], allow_singular=True)
-                    probability += gmm.weights_[j] * N.pdf(train_map[iterate_class][sample])
-                
-                probability_vector[i] = probability
-            predicted_index = np.argmax(probability_vector)
-            predicted_sound = sound_list[predicted_index]
-            true_guess = iterate_class
-            total += 1
-            if true_guess == predicted_sound:
-                correct += 1
+    print(len(train_map["uw"]))
+    probability_vectors = np.empty((12,len(train_map["uw"])))
+    predicted_indeces = np.empty((12,len(train_map["uw"])))
+    for i,sound in enumerate(train_map):
+        x = np.asfarray(train_map[sound], float)
+        gmm = GMM(n_components=n_components, covariance_type='diag', reg_covar=1e-4, random_state=0)
+        gmm.fit(train_map[sound], sound_list)
+        for j in range(n_components):
+            N = multivariate_normal(mean=gmm.means_[j], cov=gmm.covariances_[j], allow_singular=True)
+            probability += gmm.weights_[j] * N.pdf(x)
+        
+        
+        probability_vectors[i] = probability 
+        predicted_indeces[i] = np.argmax(probability_vectors,axis = 0)
+    for j,sound in enumerate(predicted_indeces):
+        for guess in sound:
+            if int(guess) == j:
+                    correct += 1
             else:
                 wrong += 1
-            confusion_matrix[true_index][predicted_index] += 1
-        true_index += 1
+            confusion_matrix[j][int(guess)] += 1
+            total += 1
+
     print("Training : ")
     print(confusion_matrix)
     print(correct/total)
