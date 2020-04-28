@@ -148,6 +148,6 @@ def equal_representation(dataset):
 
 
 
-confusion_matrix = train_test_single_gaussian(0,70,False)
+#confusion_matrix = train_test_single_gaussian(0,70,False)
 
-la.print_confusion(confusion_matrix)
+#la.print_confusion(confusion_matrix)

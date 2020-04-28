@@ -2,7 +2,6 @@ import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
 from sklearn.mixture import GaussianMixture as GMM
-import vowels as v
 import latexconfusiontable as la
 
 
@@ -37,9 +36,9 @@ def make_sequence(sounds):
 def generate_mean_cov_map(filename,start,end):
 
     mean_cov_map = {}
-    '''
+    
     classes_map = ext.extract_classes_map(filename)
-    '''
+    
     list_of_sounds = make_sequence(classes_map)
     for sound in classes_map:
         mean_cov_map[sound] =[sample_mean(classes_map[sound][start:end])]
@@ -100,6 +99,6 @@ def train_test_GMM(start,end, n_components):
 
 
 
-cm = train_test_GMM(0,70,3)
+#cm = train_test_GMM(0,70,3)
 
-la.print_confusion(cm)
+#la.print_confusion(cm)
