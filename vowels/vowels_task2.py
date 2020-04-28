@@ -39,7 +39,6 @@ def train_test_GMM(start,end, n_components):
     
     predicted_indeces = np.argmax(probability_vectors,axis = 0)
     true = np.asarray([i for i in range (12) for _ in range(70)])
-    print(true)
     for index in range(len(predicted_indeces)):
         if int(predicted_indeces[index]) == true[index]:
                 correct += 1

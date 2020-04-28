@@ -1,7 +1,6 @@
 import vowels_task1 as vt1
 import vowels_task2 as vt2
 import latexconfusiontable as lct
-#from scipy.stats import multivariate_normal
 
 
 def main():
