@@ -75,7 +75,7 @@ def train_test_GMM(start,end, n_components):
 
    
     
-    return confusion_matrix_train
+    return confusion_matrix_train, confusion_matrix_test
 
 
 
