@@ -2,7 +2,7 @@ import numpy as np
 import extract_classes as ext
 from scipy.stats import multivariate_normal
 from sklearn.mixture import GaussianMixture as GMM
-import latexconfusiontable as la
+
 
 
 
@@ -98,7 +98,3 @@ def train_test_GMM(start,end, n_components):
 
 
 
-
-#cm = train_test_GMM(0,70,3)
-
-#la.print_confusion(cm)
