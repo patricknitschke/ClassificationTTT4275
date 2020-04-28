@@ -127,6 +127,7 @@ def train_test_single_gaussian(start,end,diag = False):
 def equal_representation(dataset):
     test_set = []
     training_set = []
+    print(len(dataset))
     for man in range(0,20): #20
         training_set.append(dataset[man])
     for woman in range(46,66): #20
@@ -141,7 +142,7 @@ def equal_representation(dataset):
         test_set.append(dataset[woman])
     for boy in range(113,120): #7
         test_set.append(dataset[boy])
-    for girl in range(130,139): #8
-        test_set.append(dataset[girl]) #67 in total
+    for girl in range(130,139): #9
+        test_set.append(dataset[girl])
     return training_set,test_set
 

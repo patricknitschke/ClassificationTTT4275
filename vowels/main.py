@@ -10,7 +10,7 @@ def main():
     #lct.print_confusion(conf1)
     print("------------------------------------------")
     print("Task 2")
-    conf2 = vt2.train_test_GMM(0,70,2)
+    conf2 = vt2.train_test_GMM(0,70,3)
     #lct.print_confusion(conf2)
 
 

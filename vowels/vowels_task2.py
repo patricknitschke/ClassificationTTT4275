@@ -27,7 +27,6 @@ def train_test_GMM(start,end, n_components):
     confusion_matrix_train = np.zeros((12,12))
     x = map_join_array(train_map)
     print("Training GMM")
-    print(x)
     probability_vectors = np.empty((12,x.shape[0]))
     
 
@@ -39,17 +38,16 @@ def train_test_GMM(start,end, n_components):
             probability_vectors[i] += gmm.weights_[j] * N.pdf(x)
     
     predicted_indeces = np.argmax(probability_vectors,axis = 0)
-    true_index = 0
+    true = np.asarray([i for i in range (12) for _ in range(70)])
+    print(true)
     for index in range(len(predicted_indeces)):
-        print("guess:",predicted_indeces[index],"index:",true_index)
-        if int(predicted_indeces[index]) == true_index:
+        if int(predicted_indeces[index]) == true[index]:
                 correct += 1
         else:
             wrong += 1
-        confusion_matrix_train[true_index][int(predicted_indeces[index])] += 1
+        confusion_matrix_train[true[index]][int(predicted_indeces[index])] += 1
         total += 1
-        if (index%70 == 0 and index != 0):
-            true_index += 1
+
 
     print("Training : ")
     print(confusion_matrix_train)
